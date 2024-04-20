@@ -1,19 +1,22 @@
-name: Java CI
-
-on: [push]
-
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v3
-        with:
-          ref: master
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-      - name: Build with Maven
-        run: mvn clean package --batch-mode
+    - continue-on-error: true
+      name: Checkout source code
+      uses: actions/checkout@v3
+      with:
+        ref: master
+    - continue-on-error: true
+      name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: temurin
+        java-version: '17'
+    - continue-on-error: true
+      name: Build with Maven
+      run: mvn clean package --batch-mode
+name: Java CI
+on:
+  repository_dispatch:
+    types: trigger-ga___build.yml
